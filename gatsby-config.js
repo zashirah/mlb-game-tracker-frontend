@@ -29,6 +29,14 @@ module.exports = {
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
-    // `gatsby-plugin-offline`,
+    `gatsby-plugin-offline`,
+    {
+      resolve: `gatsby-source-mongodb`,
+      options: {
+        connectionString: `mongodb+srv://zach:zach1@cluster0.rktcu.mongodb.net`,
+        dbName: `mlbMongoDB`,
+        collection: `games`,
+      },
+    },
   ],
 }
