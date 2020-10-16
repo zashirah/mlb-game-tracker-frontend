@@ -1,5 +1,6 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
+import GameTrackerWrapper from "../components/GameTrackerWrapper"
 
 export default function GameContainer() {
   const data = useStaticQuery(graphql`
@@ -43,6 +44,6 @@ export default function GameContainer() {
 
   console.log(data.allMongodbMlbMongoDbGames.edges)
 
-  return <div>hi</div>
+  return <GameTrackerWrapper gameData={data.allMongodbMlbMongoDbGames.edges} />
 }
 
