@@ -11,7 +11,7 @@ const ChartWrapper = ({ gameData }) => {
     if (!chart) {
       setChart(new GameTrackerChart(chartArea.current, gameData))
     } else {
-      chart.update()
+      chart.update(gameData)
     }
   }, [chart, gameData])
 
