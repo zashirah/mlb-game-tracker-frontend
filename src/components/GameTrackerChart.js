@@ -1,8 +1,8 @@
 import * as d3 from "d3"
 
-const MARGIN = { TOP: 10, BOTTOM: 50, LEFT: 70, RIGHT: 10 }
-const WIDTH = 1000 - MARGIN.LEFT - MARGIN.RIGHT
-const HEIGHT = 500 - MARGIN.TOP - MARGIN.BOTTOM
+const MARGIN = { TOP: 10, BOTTOM: 10, LEFT: 10, RIGHT: 10 }
+const WIDTH = 600 - MARGIN.LEFT - MARGIN.RIGHT
+const HEIGHT = 400 - MARGIN.TOP - MARGIN.BOTTOM
 
 export default class D3Chart {
   constructor(element, gameData) {
@@ -12,14 +12,17 @@ export default class D3Chart {
     vis.svg = d3
       .select(element)
       .append("svg")
+      // .attr(
+      //   "viewBox",
+      //   `0 0 ${HEIGHT + MARGIN.TOP + MARGIN.BOTTOM} ${
+      //     WIDTH + MARGIN.LEFT + MARGIN.RIGHT
+      //   }`
+      // )
       .attr("width", WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
       .attr("height", HEIGHT + MARGIN.TOP + MARGIN.BOTTOM)
 
     // create y axis
     vis.y = d3.scaleLinear().domain([0, 1]).range([0, HEIGHT])
-
-    // create x axis
-    // vis.x = d3.scaleLinear().domain([0, gameData.length]).range([0, WIDTH])
 
     // append y axis
     vis.svg.append("g").attr("class", "y axis").call(d3.axisLeft(vis.y))
@@ -44,6 +47,7 @@ export default class D3Chart {
       .duration(500)
       .call(xAxisCall)
       .attr("transform", `translate(0, ${HEIGHT})`)
+      .attr("stroke", "white")
       .transition()
       .duration(500)
 
@@ -52,8 +56,8 @@ export default class D3Chart {
       .append("path")
       .datum([...Array(data.length).keys()])
       .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 1.5)
+      .attr("stroke", "white")
+      .attr("stroke-width", 0.75)
       .attr(
         "d",
         d3
@@ -63,6 +67,44 @@ export default class D3Chart {
           })
           .y(function (d) {
             return vis.y(0.5)
+          })
+      )
+
+    // 25% line
+    vis.svg
+      .append("path")
+      .datum([...Array(data.length).keys()])
+      .attr("fill", "none")
+      .attr("stroke", "white")
+      .attr("stroke-width", 0.25)
+      .attr(
+        "d",
+        d3
+          .line()
+          .x(function (d) {
+            return x(d)
+          })
+          .y(function (d) {
+            return vis.y(0.25)
+          })
+    )
+    
+    // 75% line
+    vis.svg
+      .append("path")
+      .datum([...Array(data.length).keys()])
+      .attr("fill", "none")
+      .attr("stroke", "white")
+      .attr("stroke-width", 0.25)
+      .attr(
+        "d",
+        d3
+          .line()
+          .x(function (d) {
+            return x(d)
+          })
+          .y(function (d) {
+            return vis.y(0.75)
           })
       )
 
@@ -118,8 +160,8 @@ export default class D3Chart {
       .duration(500)
       .attr("class", "pathLine")
       .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 1.5)
+      .attr("stroke", "white")
+      .attr("stroke-width", 2.5)
       .attr(
         "d",
         d3
@@ -157,6 +199,6 @@ export default class D3Chart {
       .attr("cx", (d, i) => x(i))
       .attr("cy", d => vis.y(1 - d.node.homeTeamWinPct))
       .attr("r", 3)
-      .attr("fill", "steelblue")
+      .attr("fill", "white")
   }
 }
