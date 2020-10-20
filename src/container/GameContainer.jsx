@@ -4,6 +4,14 @@ import GameTrackerWrapper from "../components/GameTrackerWrapper"
 import Dropdown from "../components/Dropdown"
 import Scoreboard from "../components/Scoreboard"
 
+import styled from "styled-components"
+
+const GameContainerDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
 export default function GameContainer() {
   const [gameData, setGameData] = useState([])
   const [selected, setSelected] = useState("44094-ATL@NYM-1")
@@ -68,7 +76,7 @@ export default function GameContainer() {
   }, [gameData, selected])
 
   return (
-    <>
+    <GameContainerDiv>
       <Dropdown
         games={data.allMongodbMlbMongoDbGames.distinct}
         setSelected={setSelected}
@@ -80,6 +88,6 @@ export default function GameContainer() {
           <GameTrackerWrapper gameData={selectedGame} />
         </>
       )}
-    </>
+    </GameContainerDiv>
   )
 }
