@@ -1,25 +1,22 @@
-import React, { useState } from "react"
+import React from "react"
 
 export default function Dropdown({ games, setSelected }) {
   return (
-    <form>
-      <input type="select" placeholder="Search for a Game"></input>
-
-      <button>Submit</button>
-      <div
-        // style={{
-        //   height: "200px",
-        // }}
-      >
+    <form onChange={(e) => {
+      e.preventDefault()
+      setSelected(e.target.value)
+    }}>
+      <select>
+        <option>- Select a Game -</option>
         {games.map(game => (
-          <button key={game} onClick={(e) => {
-            e.preventDefault()
-            setSelected(game)
-          }}>
+          <option
+            key={game}
+            value={game}
+          >
             {game}
-          </button>
+          </option>
         ))}
-      </div>
+      </select>
     </form>
   )
 }

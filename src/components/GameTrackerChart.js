@@ -70,8 +70,7 @@ export default class D3Chart {
     // DATA JOIN
     const lines = vis.svg.selectAll(".pathLine").data(data)
 
-    console.log("lines", lines)
-
+    // can't get lines to update properly. This is the article I followed: https://www.d3-graph-gallery.com/graph/line_change_data.html
     // lines
     //   .enter()
     //   .append("path")
