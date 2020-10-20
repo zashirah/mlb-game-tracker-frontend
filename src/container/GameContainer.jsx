@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import GameTrackerWrapper from "../components/GameTrackerWrapper"
 import Dropdown from "../components/Dropdown"
+import Scoreboard from "../components/Scoreboard"
 
 export default function GameContainer() {
   const [gameData, setGameData] = useState([])
-  const [selected, setSelected] = useState('44094-ATL@NYM-1')
+  const [selected, setSelected] = useState("44094-ATL@NYM-1")
   const [selectedGame, setSelectedGame] = useState([])
 
   const data = useStaticQuery(graphql`
@@ -48,38 +49,23 @@ export default function GameContainer() {
     }
   `)
 
-  // console.log(data.allMongodbMlbMongoDbGames.distinct)
-  // console.log(data.allMongodbMlbMongoDbGames.edges)
-
   useEffect(() => {
     setGameData(data.allMongodbMlbMongoDbGames.edges)
-    // console.log("test", gameData)
 
     let singleGame
 
     if (!selected) {
-      // console.log("hi") 
       singleGame = data.allMongodbMlbMongoDbGames.edges.filter(
         g => g.node.gameId === "44094-ATL@NYM-1"
       )
     } else {
-      // console.log("hi2")
       singleGame = data.allMongodbMlbMongoDbGames.edges.filter(
         g => g.node.gameId === selected
       )
     }
 
-    // console.log("singlegame", singleGame)
     setSelectedGame(singleGame)
-    // console.log("test2", selectedGame)
-
-  console.log('running')
-
-
   }, [gameData, selected])
-
-  console.log(selected)
-  console.log(selectedGame)
 
   return (
     <>
@@ -88,9 +74,12 @@ export default function GameContainer() {
         setSelected={setSelected}
         selected={selected}
       />
-      {selectedGame.length > 0 && 
-        <GameTrackerWrapper gameData={selectedGame} />
-      }
+      {selectedGame.length > 0 && (
+        <>
+          <Scoreboard gameData={selectedGame} />
+          <GameTrackerWrapper gameData={selectedGame} />
+        </>
+      )}
     </>
   )
 }
