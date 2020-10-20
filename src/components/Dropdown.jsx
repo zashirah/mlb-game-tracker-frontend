@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React from "react"
 
-export default function Dropdown({ games, setSelected, selected }) {
+export default function Dropdown({ games, setSelected }) {
   return (
     <form onChange={(e) => {
       e.preventDefault()
