@@ -83,7 +83,11 @@ export default function GameContainer() {
 
   return (
     <>
-      <Dropdown games={data.allMongodbMlbMongoDbGames.distinct} setSelected={setSelected}/>
+      <Dropdown
+        games={data.allMongodbMlbMongoDbGames.distinct}
+        setSelected={setSelected}
+        selected={selected}
+      />
       {selectedGame.length > 0 && 
         <GameTrackerWrapper gameData={selectedGame} />
       }
