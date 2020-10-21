@@ -1,18 +1,20 @@
 import * as d3 from "d3"
 
 const MARGIN = { TOP: 60, BOTTOM: 50, LEFT: 70, RIGHT: 10 }
-const WIDTH = 600 - MARGIN.LEFT - MARGIN.RIGHT
+// const WIDTH = 600 - MARGIN.LEFT - MARGIN.RIGHT
 const HEIGHT = 400 - MARGIN.TOP - MARGIN.BOTTOM
 
 export default class D3Chart {
-  constructor(element, gameData) {
+  constructor(element, gameData, screenWidth) {
     let vis = this
+  
+    vis.WIDTH = screenWidth - MARGIN.LEFT - MARGIN.RIGHT
 
     // create svg canvas
     vis.svg = d3
       .select(element)
       .append("svg")
-      .attr("width", WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
+      .attr("width", vis.WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
       .attr("height", HEIGHT + MARGIN.TOP + MARGIN.BOTTOM)
       .append("g")
       .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`)
@@ -32,6 +34,7 @@ export default class D3Chart {
       .text("Home Team Win Probability")
       .attr("transform", "rotate(-90)")
       .attr("fill", "white")
+      .attr("font-size", "12px")
 
     vis.yAxisGroup = vis.svg.append("g")
 
@@ -48,31 +51,32 @@ export default class D3Chart {
     // title
     vis.svg
       .append("text")
-      .attr("x", WIDTH / 2)
+      .attr("x", vis.WIDTH / 2)
       .attr("y", -40)
       .attr("text-anchor", "middle")
       .text("Home Team Win Percent by Game State")
       .attr("fill", "white")
+      .attr("font-size", "12px")
     
     vis.svg
       .append("text")
-      .attr("x", WIDTH / 2)
+      .attr("x", vis.WIDTH / 2)
       .attr("y", -20)
       .attr("text-anchor", "middle")
       .text("Data Sourced from bigdataball.com")
       .attr("fill", "white")
-      .attr("font-size", "12px")
+      .attr("font-size", "8px")
 
     vis.svg
       .append("text")
-      .attr("x", WIDTH / 2)
+      .attr("x", vis.WIDTH / 2)
       .attr("y", -5)
       .attr("text-anchor", "middle")
       .text(
         "Used 2016 regular and post season data to calculate Win % by game state"
       )
       .attr("fill", "white")
-      .attr("font-size", "12px")
+      .attr("font-size", "8px")
 
 
     // call update()
@@ -83,10 +87,7 @@ export default class D3Chart {
     const vis = this
 
     // create x axis
-    const x = d3
-      .scaleLinear()
-      .domain([0, data.length])
-      .range([0, WIDTH])
+    const x = d3.scaleLinear().domain([0, data.length]).range([0, vis.WIDTH])
 
     // append x axis
     const xAxisCall = d3.axisBottom(x)
