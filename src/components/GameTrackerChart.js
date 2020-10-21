@@ -1,6 +1,6 @@
 import * as d3 from "d3"
 
-const MARGIN = { TOP: 10, BOTTOM: 10, LEFT: 10, RIGHT: 10 }
+const MARGIN = { TOP: 60, BOTTOM: 50, LEFT: 70, RIGHT: 10 }
 const WIDTH = 600 - MARGIN.LEFT - MARGIN.RIGHT
 const HEIGHT = 400 - MARGIN.TOP - MARGIN.BOTTOM
 
@@ -12,23 +12,68 @@ export default class D3Chart {
     vis.svg = d3
       .select(element)
       .append("svg")
-      // .attr(
-      //   "viewBox",
-      //   `0 0 ${HEIGHT + MARGIN.TOP + MARGIN.BOTTOM} ${
-      //     WIDTH + MARGIN.LEFT + MARGIN.RIGHT
-      //   }`
-      // )
       .attr("width", WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
       .attr("height", HEIGHT + MARGIN.TOP + MARGIN.BOTTOM)
+      .append("g")
+      .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`)
 
     // create y axis
     vis.y = d3.scaleLinear().domain([0, 1]).range([0, HEIGHT])
 
     // append y axis
-    vis.svg.append("g").attr("class", "y axis").call(d3.axisLeft(vis.y))
+    // vis.svg.append("g").attr("class", "y axis").call(d3.axisLeft(vis.y))
+
+    // y axis
+    vis.svg
+      .append("text")
+      .attr("x", -(HEIGHT / 2))
+      .attr("y", -50)
+      .attr("text-anchor", "middle")
+      .text("Home Team Win Probability")
+      .attr("transform", "rotate(-90)")
+      .attr("fill", "white")
+
+    vis.yAxisGroup = vis.svg.append("g")
+
+    const yAxisCall = d3
+      .axisLeft(vis.y)
+      .tickValues([0.25, 0.5, 0.75])
+      .tickFormat(d => d * 100 + "%")
+    
+    vis.yAxisGroup.call(yAxisCall)
 
     // create x axis group
     vis.xAxisGroup = vis.svg.append("g")
+
+    // title
+    vis.svg
+      .append("text")
+      .attr("x", WIDTH / 2)
+      .attr("y", -40)
+      .attr("text-anchor", "middle")
+      .text("Home Team Win Percent by Game State")
+      .attr("fill", "white")
+    
+    vis.svg
+      .append("text")
+      .attr("x", WIDTH / 2)
+      .attr("y", -20)
+      .attr("text-anchor", "middle")
+      .text("Data Sourced from bigdataball.com")
+      .attr("fill", "white")
+      .attr("font-size", "12px")
+
+    vis.svg
+      .append("text")
+      .attr("x", WIDTH / 2)
+      .attr("y", -5)
+      .attr("text-anchor", "middle")
+      .text(
+        "Used 2016 regular and post season data to calculate Win % by game state"
+      )
+      .attr("fill", "white")
+      .attr("font-size", "12px")
+
 
     // call update()
     vis.update(gameData)
@@ -38,7 +83,10 @@ export default class D3Chart {
     const vis = this
 
     // create x axis
-    const x = d3.scaleLinear().domain([0, data.length]).range([0, WIDTH])
+    const x = d3
+      .scaleLinear()
+      .domain([0, data.length])
+      .range([0, WIDTH])
 
     // append x axis
     const xAxisCall = d3.axisBottom(x)
@@ -47,7 +95,7 @@ export default class D3Chart {
       .duration(500)
       .call(xAxisCall)
       .attr("transform", `translate(0, ${HEIGHT})`)
-      .attr("stroke", "white")
+      .attr("fill", "none")
       .transition()
       .duration(500)
 
@@ -106,8 +154,8 @@ export default class D3Chart {
           .y(function (d) {
             return vis.y(0.75)
           })
-      )
-
+    )
+    
     // UPDATE THE LINES
     // DATA JOIN
     const lines = vis.svg.selectAll(".pathLine").data(data)
