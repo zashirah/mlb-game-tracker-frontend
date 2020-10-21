@@ -17,7 +17,8 @@ export default function Scoreboard({ gameData }) {
   // console.log(processedGameData)
 
   const ScoreboardDiv = styled.div`
-    width: 600px;
+    width: 90%;
+    max-width: 800px;
     border: solid rgb(247, 252, 242) 3px;
     padding: 10px;
     margin-bottom: 20px;
