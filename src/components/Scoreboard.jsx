@@ -17,7 +17,7 @@ export default function Scoreboard({ gameData }) {
   // console.log(processedGameData)
 
   const ScoreboardDiv = styled.div`
-    width: 90%;
+    width: 95%;
     max-width: 800px;
     border: solid rgb(247, 252, 242) 3px;
     padding: 10px;
@@ -38,8 +38,6 @@ export default function Scoreboard({ gameData }) {
       <ScoreboardBox value={roadTeam} inning={"top"} />
       <ScoreboardBox value={homeTeam} inning={"bottom"} />
       {Object.keys(processedGameData).map(inningKey => (
-        // console.log("test", inningKey[inningKey.length - 1] === "T")
-
         <ScoreboardBox
           key={inningKey}
           value={processedGameData[inningKey]}
