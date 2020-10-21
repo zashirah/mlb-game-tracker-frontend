@@ -1,14 +1,14 @@
 import * as d3 from "d3"
 
-const MARGIN = { TOP: 60, BOTTOM: 50, LEFT: 70, RIGHT: 10 }
-// const WIDTH = 600 - MARGIN.LEFT - MARGIN.RIGHT
+const MARGIN = { TOP: 60, BOTTOM: 50, LEFT: 50, RIGHT: 10 }
+const WIDTH = 600 - MARGIN.LEFT - MARGIN.RIGHT
 const HEIGHT = 400 - MARGIN.TOP - MARGIN.BOTTOM
 
 export default class D3Chart {
   constructor(element, gameData, screenWidth) {
     let vis = this
   
-    vis.WIDTH = screenWidth - MARGIN.LEFT - MARGIN.RIGHT
+    vis.WIDTH = Math.min(screenWidth - MARGIN.LEFT - MARGIN.RIGHT, 800)
 
     // create svg canvas
     vis.svg = d3
@@ -29,7 +29,7 @@ export default class D3Chart {
     vis.svg
       .append("text")
       .attr("x", -(HEIGHT / 2))
-      .attr("y", -50)
+      .attr("y", -40)
       .attr("text-anchor", "middle")
       .text("Home Team Win Probability")
       .attr("transform", "rotate(-90)")
@@ -54,7 +54,7 @@ export default class D3Chart {
       .attr("x", vis.WIDTH / 2)
       .attr("y", -40)
       .attr("text-anchor", "middle")
-      .text("Home Team Win Percent by Game State")
+      .text("Home Team Win Percent by Over Time")
       .attr("fill", "white")
       .attr("font-size", "12px")
     
@@ -73,7 +73,7 @@ export default class D3Chart {
       .attr("y", -5)
       .attr("text-anchor", "middle")
       .text(
-        "Used 2016 regular and post season data to calculate Win % by game state"
+        "Used 2016-20 data to calculate Win % by game state"
       )
       .attr("fill", "white")
       .attr("font-size", "8px")
@@ -221,7 +221,12 @@ export default class D3Chart {
 
     // UPDATE THE DOTS
     // DATA JOIN
-    const dots = vis.svg.selectAll(".dot").data(data)
+    const dots = vis.svg
+      .selectAll(".dot")
+      .data(data)
+      // .on("click", () => {
+      //   d3.select(this).style("background-color", "black")
+      // })
 
     // EXIT
     dots
@@ -249,5 +254,8 @@ export default class D3Chart {
       .attr("cy", d => vis.y(1 - d.node.homeTeamWinPct))
       .attr("r", 3)
       .attr("fill", "white")
+      // .on("click", () => {
+      //   d3.select(this).style("background-color", "black")
+      // })
   }
 }

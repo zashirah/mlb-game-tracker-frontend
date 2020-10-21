@@ -5,7 +5,7 @@ const ChartWrapper = ({ gameData }) => {
   const chartArea = useRef(null)
   const [chart, setChart] = useState(null)
 
-  const screenWidth = window.innerWidth * 0.9
+  const screenWidth = window.innerWidth * 0.95
 
   console.log(screenWidth)
 
