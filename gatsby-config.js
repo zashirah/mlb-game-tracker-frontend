@@ -38,5 +38,6 @@ module.exports = {
         collection: `games`,
       },
     },
+    `gatsby-plugin-styled-components`
   ],
 }

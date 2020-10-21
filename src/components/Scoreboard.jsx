@@ -1,4 +1,7 @@
 import React from "react"
+
+import styled from "styled-components"
+
 import ScoreboardBox from "./ScoreboardBox"
 import processScoreboardData from "../utils/processGameDataForScoreboard"
 
@@ -7,31 +10,42 @@ export default function Scoreboard({ gameData }) {
   const homeTeam = gameData[0].node.homeTeam
   const roadTeam = gameData[0].node.roadTeam
 
-  console.log(homeTeam)
-  console.log(roadTeam)
+  // console.log(homeTeam)
+  // console.log(roadTeam)
 
-  console.log(Object.keys(processedGameData).length)
+  // console.log(Object.keys(processedGameData).length)
+  // console.log(processedGameData)
+
+  const ScoreboardDiv = styled.div`
+    width: 600px;
+    border: solid rgb(247, 252, 242) 3px;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: grid;
+    background-color: rgb(47, 77, 50);
+    grid: 30px 50px 50px / 2fr repeat(${props => props.innings}, 1fr);
+  `
+
+  const innings = Math.ceil(Object.keys(processedGameData).length / 2)
 
   return (
-    <div
-      style={{
-        height: "200px",
-        width: "1000px",
-        border: "solid gray 1px",
-        padding: "10px",
-        marginBottom: "20px",
-        display: "flex",
-        flexDirection: "column",
-        flexWrap: "wrap",
-        justifyContent: 'center',
-        
-      }}
-    >
-      <ScoreboardBox value={roadTeam} />
-      <ScoreboardBox value={homeTeam} />
-      {Object.keys(processedGameData).map(inning => (
-        <ScoreboardBox key={inning} value={processedGameData[inning]} />
+    <ScoreboardDiv innings={innings}>
+      <ScoreboardBox value={" "} boxShadow={"none"} />
+      {[...Array(innings).keys()].map(inning => (
+        <ScoreboardBox key={inning} value={inning + 1} />
       ))}
-    </div>
+      <ScoreboardBox value={roadTeam} inning={"top"} />
+      <ScoreboardBox value={homeTeam} inning={"bottom"} />
+      {Object.keys(processedGameData).map(inningKey => (
+        // console.log("test", inningKey[inningKey.length - 1] === "T")
+
+        <ScoreboardBox
+          key={inningKey}
+          value={processedGameData[inningKey]}
+          inning={inningKey[inningKey.length - 1] === "T" ? "top" : "bottom"}
+          fontSize={"36px"}
+        />
+      ))}
+    </ScoreboardDiv>
   )
 }
