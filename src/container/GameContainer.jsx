@@ -16,6 +16,7 @@ export default function GameContainer() {
   const [gameData, setGameData] = useState([])
   const [selected, setSelected] = useState("44094-ATL@NYM-1")
   const [selectedGame, setSelectedGame] = useState([])
+  const [selectedAtbat, setSelectedAtbat] = useState({})
 
   const data = useStaticQuery(graphql`
     query mlbData {
@@ -85,7 +86,7 @@ export default function GameContainer() {
       {selectedGame.length > 0 && (
         <>
           <Scoreboard gameData={selectedGame} />
-          <GameTrackerWrapper gameData={selectedGame} />
+          <GameTrackerWrapper gameData={selectedGame} setSelectedAtbat={setSelectedAtbat} selectedAtbat={selectedAtbat}/>
         </>
       )}
     </GameContainerDiv>
