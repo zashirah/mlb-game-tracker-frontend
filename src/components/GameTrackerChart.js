@@ -5,9 +5,11 @@ const WIDTH = 600 - MARGIN.LEFT - MARGIN.RIGHT
 const HEIGHT = 400 - MARGIN.TOP - MARGIN.BOTTOM
 
 export default class D3Chart {
-  constructor(element, gameData, screenWidth) {
+  constructor(element, gameData, screenWidth, handleDotClick) {
     let vis = this
-  
+
+    vis.handleDotClick = handleDotClick
+
     vis.WIDTH = Math.min(screenWidth - MARGIN.LEFT - MARGIN.RIGHT, 800)
 
     // create svg canvas
@@ -42,7 +44,7 @@ export default class D3Chart {
       .axisLeft(vis.y)
       .tickValues([0.25, 0.5, 0.75])
       .tickFormat(d => d * 100 + "%")
-    
+
     vis.yAxisGroup.call(yAxisCall)
 
     // create x axis group
@@ -57,7 +59,7 @@ export default class D3Chart {
       .text("Home Team Win Percent by Over Time")
       .attr("fill", "white")
       .attr("font-size", "12px")
-    
+
     vis.svg
       .append("text")
       .attr("x", vis.WIDTH / 2)
@@ -72,12 +74,9 @@ export default class D3Chart {
       .attr("x", vis.WIDTH / 2)
       .attr("y", -5)
       .attr("text-anchor", "middle")
-      .text(
-        "Used 2016-20 data to calculate Win % by game state"
-      )
+      .text("Used 2016-20 data to calculate Win % by game state")
       .attr("fill", "white")
       .attr("font-size", "8px")
-
 
     // call update()
     vis.update(gameData)
@@ -136,8 +135,8 @@ export default class D3Chart {
           .y(function (d) {
             return vis.y(0.25)
           })
-    )
-    
+      )
+
     // 75% line
     vis.svg
       .append("path")
@@ -155,8 +154,8 @@ export default class D3Chart {
           .y(function (d) {
             return vis.y(0.75)
           })
-    )
-    
+      )
+
     // UPDATE THE LINES
     // DATA JOIN
     const lines = vis.svg.selectAll(".pathLine").data(data)
@@ -224,9 +223,9 @@ export default class D3Chart {
     const dots = vis.svg
       .selectAll(".dot")
       .data(data)
-      // .on("click", () => {
-      //   d3.select(this).style("background-color", "black")
-      // })
+      .on("click", d => {
+        vis.handleDotClick(d.target.attributes[5].value)
+      })
 
     // EXIT
     dots
@@ -243,7 +242,10 @@ export default class D3Chart {
       .duration(500)
       .attr("cx", (d, i) => x(i))
       .attr("cy", d => vis.y(1 - d.node.homeTeamWinPct))
-      .attr("r", 3)
+      .attr("r", 5)
+      .attr("value", d => d.node.id)
+      .attr("style", "padding: 20px; margin: 20px")
+    // .padding(5)
 
     // select dots class, bind data, appendcircles
     dots
@@ -252,10 +254,58 @@ export default class D3Chart {
       .attr("class", "dot")
       .attr("cx", (d, i) => x(i))
       .attr("cy", d => vis.y(1 - d.node.homeTeamWinPct))
-      .attr("r", 3)
+      .attr("r", 5)
       .attr("fill", "white")
-      // .on("click", () => {
-      //   d3.select(this).style("background-color", "black")
-      // })
+      .attr("value", d => d.node.id)
+      .attr("style", "padding: 20px; margin: 20px")
+    // .padding(5)
+  }
+
+  updateSelectedDot(data, selectedDot) {
+    const vis = this
+
+    // create x axis
+    const x = d3.scaleLinear().domain([0, data.length]).range([0, vis.WIDTH])
+
+    const dots = vis.svg
+      .selectAll(".dot")
+      .data(data)
+      .on("click", d => {
+        vis.handleDotClick(d.target.attributes[5].value)
+      })
+
+    // EXIT
+    dots
+      .exit()
+      .transition()
+      .duration(500)
+      .attr("height", 0)
+      .attr("y", HEIGHT)
+      .remove()
+
+    // UPDATE
+    dots
+      .transition()
+      .duration(500)
+      .attr("cx", (d, i) => x(i))
+      .attr("cy", d => vis.y(1 - d.node.homeTeamWinPct))
+      .attr("r", d => (d.node.id === selectedDot.id ? 10 : 5))
+      .attr("value", d => d.node.id)
+      .attr("fill", d => (d.node.id === selectedDot.id ? "red" : "white"))
+      .attr("style", "padding: 20px; margin: 20px")
+      // .padding(5)
+
+    // select dots class, bind data, appendcircles
+    dots
+      .enter()
+      .append("circle")
+      .attr("class", "dot")
+      .attr("cx", (d, i) => x(i))
+      .attr("cy", d => vis.y(1 - d.node.homeTeamWinPct))
+      .attr("r", d => (d.node.id === selectedDot.id ? 10 : 5))
+      .attr("fill", d => (d.node.id === selectedDot.id ? "red" : "white"))
+      .attr("value", d => d.node.id)
+      .attr("style", "padding: 20px; margin: 20px")
+      // .padding(5)
   }
 }
