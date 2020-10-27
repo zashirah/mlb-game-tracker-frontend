@@ -45,6 +45,7 @@ export default class D3Chart {
       .tickValues([0.25, 0.5, 0.75])
       .tickFormat(d => d * 100 + "%")
 
+
     vis.yAxisGroup.call(yAxisCall)
 
     // create x axis group
@@ -133,7 +134,7 @@ export default class D3Chart {
             return x(d)
           })
           .y(function (d) {
-            return vis.y(0.25)
+            return vis.y(0.75)
           })
       )
 
@@ -152,7 +153,7 @@ export default class D3Chart {
             return x(d)
           })
           .y(function (d) {
-            return vis.y(0.75)
+            return vis.y(0.25)
           })
       )
 
