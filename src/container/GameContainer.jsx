@@ -20,7 +20,9 @@ export default function GameContainer() {
 
   const data = useStaticQuery(graphql`
     query mlbData {
-      allMongodbMlbMongoDbGames {
+      allMongodbMlbMongoDbGames(
+        sort: { fields: [gameId, inning], order: [ASC, ASC] }
+      ) {
         edges {
           node {
             id
