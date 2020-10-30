@@ -29,9 +29,9 @@ const ChartWrapper = ({ gameData, selectedAtbat, setSelectedAtbat }) => {
     }
   }, [chart, gameData])
 
-  useEffect(() => {
-    chart && chart.updateSelectedDot(gameData, selectedAtbat)
-  }, [selectedAtbat])
+  // useEffect(() => {
+  //   chart && chart.updateSelectedDot(gameData, selectedAtbat)
+  // }, [selectedAtbat])
 
   return <div className="chart-area" ref={chartArea}></div>
 }

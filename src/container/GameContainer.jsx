@@ -60,6 +60,7 @@ export default function GameContainer() {
 
   useEffect(() => {
     setGameData(data.allMongodbMlbMongoDbGames.edges)
+    console.log(data.allMongodbMlbMongoDbGames.edges)
 
     let singleGame
 
@@ -74,6 +75,7 @@ export default function GameContainer() {
     }
 
     setSelectedGame(singleGame)
+    console.log(singleGame)
   }, [gameData, selected])
 
   return (
@@ -86,7 +88,11 @@ export default function GameContainer() {
       {selectedGame.length > 0 && (
         <>
           <Scoreboard gameData={selectedGame} />
-          <GameTrackerWrapper gameData={selectedGame} setSelectedAtbat={setSelectedAtbat} selectedAtbat={selectedAtbat}/>
+          <GameTrackerWrapper
+            gameData={selectedGame}
+            setSelectedAtbat={setSelectedAtbat}
+            selectedAtbat={selectedAtbat}
+          />
         </>
       )}
     </GameContainerDiv>
