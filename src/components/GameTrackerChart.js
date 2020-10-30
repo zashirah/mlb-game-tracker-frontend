@@ -43,7 +43,7 @@ export default class D3Chart {
     const yAxisCall = d3
       .axisLeft(vis.y)
       .tickValues([0.25, 0.5, 0.75])
-      .tickFormat(d => d * 100 + "%")
+      .tickFormat(d => (1 - d) * 100 + "%")
 
 
     vis.yAxisGroup.call(yAxisCall)
@@ -224,9 +224,9 @@ export default class D3Chart {
     const dots = vis.svg
       .selectAll(".dot")
       .data(data)
-      .on("click", d => {
-        vis.handleDotClick(d.target.attributes[5].value)
-      })
+      // .on("click", d => {
+      //   vis.handleDotClick(d.target.attributes[5].value)
+      // })
 
     // EXIT
     dots
@@ -271,9 +271,9 @@ export default class D3Chart {
     const dots = vis.svg
       .selectAll(".dot")
       .data(data)
-      .on("click", d => {
-        vis.handleDotClick(d.target.attributes[5].value)
-      })
+      // .on("click", d => {
+      //   vis.handleDotClick(d.target.attributes[5].value)
+      // })
 
     // EXIT
     dots
