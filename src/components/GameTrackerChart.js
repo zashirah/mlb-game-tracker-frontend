@@ -224,9 +224,9 @@ export default class D3Chart {
     const dots = vis.svg
       .selectAll(".dot")
       .data(data)
-      .on("click", d => {
-        vis.handleDotClick(d.target.attributes[5].value)
-      })
+      // .on("click", d => {
+      //   vis.handleDotClick(d.target.attributes[5].value)
+      // })
 
     // EXIT
     dots
@@ -271,9 +271,9 @@ export default class D3Chart {
     const dots = vis.svg
       .selectAll(".dot")
       .data(data)
-      .on("click", d => {
-        vis.handleDotClick(d.target.attributes[5].value)
-      })
+      // .on("click", d => {
+      //   vis.handleDotClick(d.target.attributes[5].value)
+      // })
 
     // EXIT
     dots
